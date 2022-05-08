@@ -1,22 +1,29 @@
-package com.example.applicationL26;
+package com.example.applicationL26.activity;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
+//import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
+import activity.MyTasksActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
-//import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+
+import com.example.applicationL26.R;
+
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -27,64 +34,57 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AllButtonTasksTaskDetailsMyTasksActivityTest<ActivityTestRule> {
+public class goPagesTest {
 
-//    @Rule
-//    public ActivityTestRule mActivityTestRule = new ActivityTestRule<>(MyTasksActivity.class);
+    @Rule
+    public ActivityTestRule<MyTasksActivity> mActivityTestRule = new ActivityTestRule<>(MyTasksActivity.class);
 
     @Test
-    public void allButtonTasksTaskDetailsMyTasksActivityTest() {
+    public void goPagesTest() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.doTaxesButton), withText("Do Taxes"),
+                allOf(withId(R.id.goToAddTaskButton), withText("Add Task"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                3),
+                                1),
                         isDisplayed()));
         materialButton.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.titleTaskDetailTextView), withText("Do Taxes"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView.check(matches(withText("Do Taxes")));
-
-        pressBack();
-
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.groceriesButton), withText("gym"),
+                allOf(withId(R.id.submitTaskButton), withText("Add Task"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                1),
                         isDisplayed()));
         materialButton2.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.titleTaskDetailTextView), withText("gym"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView2.check(matches(withText("gym")));
 
         pressBack();
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.dogFoodButton), withText("wash dishes"),
+                allOf(withId(R.id.allTasksButton), withText("ALL TASKS"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                5),
+                                2),
                         isDisplayed()));
         materialButton3.perform(click());
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.titleTaskDetailTextView), withText("wash dishes"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView3.check(matches(withText("wash dishes")));
+        pressBack();
+
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.tasksListRecycleView),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                5)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+    }
+
+    private ViewAction actionOnItemAtPosition(int i, ViewAction click) {
+            return null;
     }
 
     private static Matcher<View> childAtPosition(

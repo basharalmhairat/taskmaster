@@ -13,32 +13,44 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 import com.example.applicationL26.R;
-import model.State;
+import database.TaskMasterDatabase;
 import model.Task;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyTasksActivity extends AppCompatActivity {
 
     public final String TAG = "MainActivity";
     public static String TASK_DETAIL_TITLE_TAG = "TASK DETAIL TITLE";
+    public static String TASK_DETAIL_BODY_TAG = "TASK DESCRIPTION TITLE";
     SharedPreferences userPreferences;
     MyTasksListRecyclerViewAdapter myTasksListRecyclerViewAdapter;
-    List<Task> tasksList = new ArrayList<>();
+    List<Task> tasksList = null;
+    TaskMasterDatabase taskMasterDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_tasks);
         userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        taskMasterDatabase = Room.databaseBuilder(
+                        getApplicationContext(),
+                        TaskMasterDatabase.class,
+                        "task_master_base")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+        tasksList = taskMasterDatabase.taskDao().findAll();
 
         addTaskButtonSetUp();
         allTasksButtonSetUp();
         settingsImageButtonSetUp();
         myTasksListRecycleViewSetUp();
+
+
     }
+
     @Override
     public void onResume(){
         super.onResume();
@@ -86,16 +98,22 @@ public class MyTasksActivity extends AppCompatActivity {
             }
         });
     }
+
+
     public void myTasksListRecycleViewSetUp(){
         RecyclerView myTasksListRecycleView = findViewById(R.id.tasksListRecycleView);
+
         RecyclerView.LayoutManager taskLayoutManager =  new LinearLayoutManager(this);
+
         myTasksListRecycleView.setLayoutManager(taskLayoutManager);
 
-        tasksList.add(new Task("watch my class", "it,s daily task", State.NEW));
-        tasksList.add(new Task("write some code", "it,s daily task", State.NEW));
-        tasksList.add(new Task("clean the back yard", "ASAP it will rain ", State.NEW));
-        tasksList.add(new Task("feed the cat", "also she might need water", State.NEW));
-        tasksList.add(new Task("finch home work", "try to read some books", State.NEW));
+//        tasksList.add(new Task("watch my class", "it,s daily task", StateEnum.NEW));
+//        tasksList.add(new Task("write some code", "it,s daily task", StateEnum.NEW));
+//        tasksList.add(new Task("clean the back yard", "ASAP it will rain ", StateEnum.NEW));
+//        tasksList.add(new Task("feed the cat", "also she might need water", StateEnum.NEW));
+//        tasksList.add(new Task("finch home work", "try to read some books", StateEnum.NEW));
+
+
         myTasksListRecyclerViewAdapter = new MyTasksListRecyclerViewAdapter(tasksList, this);
 
         myTasksListRecycleView.setAdapter(myTasksListRecyclerViewAdapter);

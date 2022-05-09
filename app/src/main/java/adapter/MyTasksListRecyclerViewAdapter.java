@@ -1,20 +1,17 @@
 package adapter;
 
+import activity.MyTasksActivity;
+import activity.TaskDetailActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.applicationL26.R;
-import activity.MyTasksActivity;
-import activity.TaskDetailActivity;
 import model.Task;
-
-
 import java.util.List;
 
 public class MyTasksListRecyclerViewAdapter extends RecyclerView.Adapter<MyTasksListRecyclerViewAdapter.MyTasksListViewHolder> {
@@ -39,18 +36,21 @@ public class MyTasksListRecyclerViewAdapter extends RecyclerView.Adapter<MyTasks
     @Override
     public void onBindViewHolder(@NonNull MyTasksListViewHolder holder, int position) {
         TextView taskFragmentTextView = holder.itemView.findViewById(R.id.taskFragmentTextView);
-        String taskTitle = tasksList.get(position).getTitle();
-        taskFragmentTextView.setText(taskTitle);
+        Task task = tasksList.get(position);
+        taskFragmentTextView.setText( position+1 +" "+ task.getTitle() +
+                "\n" + task.getState());
 
         View myTaskViewHolder = holder.itemView;
         myTaskViewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent goTasksDetailsIntent = new Intent(gettingActivity, TaskDetailActivity.class);
-                goTasksDetailsIntent.putExtra(MyTasksActivity.TASK_DETAIL_TITLE_TAG, taskTitle);
+                goTasksDetailsIntent.putExtra(MyTasksActivity.TASK_DETAIL_TITLE_TAG, task.getTitle());
                 gettingActivity.startActivity(goTasksDetailsIntent);
             }
         });
+
+
     }
 
     @Override

@@ -13,9 +13,12 @@ import com.example.applicationL26.R;
  * create an instance of this fragment.
  */
 public class MyTasksListFragment extends Fragment {
+
+
     public MyTasksListFragment() {
 
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -26,12 +29,16 @@ public class MyTasksListFragment extends Fragment {
      */
     public static MyTasksListFragment newInstance(String param1, String param2) {
         MyTasksListFragment fragment = new MyTasksListFragment();
+
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
